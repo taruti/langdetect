@@ -10,7 +10,7 @@ import (
 
 // Sniffs the correct character set and returns a utf8 reader,
 // the original character set and a possible error.
-func XmlUtf8(rd io.Reader) (utf8reader io.Reader, charset string, err error) {
+func SniffXmlToUtf8(rd io.Reader) (utf8reader io.Reader, charset string, err error) {
 	bfr := bufio.NewReader(rd)
 	b, err := bfr.Peek(64)
 	if len(b) < 4 {
