@@ -211,7 +211,7 @@ func DetectLanguage(utf8slice []byte, originalCharset string) Language {
 	return Unknown
 }
 
-var Unknown = Language([2]byte{})
+var Unknown = Language{}
 
 //ko:                                   asc  space spec
 //total=6696 letters=1104 half=552 arr: [919 2117 3474 31 8 69 0 5 24 6 3 0 0 0 0 0 0 32 0 0]
