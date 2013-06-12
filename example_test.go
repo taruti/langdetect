@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/taruti/langdetect"
+	"testing"
 )
 
 type MyStruct struct {
@@ -20,21 +21,21 @@ Suurin Wikipedia on englanninkielinen, jossa on yli 3 600 000 artikkelia. Saksan
 </X></X>`)
 var someXmlInIso885915 = bytes.Replace(bytes.Replace(someXml, []byte("ä"), []byte{0xE4}, -1), []byte("ö"), []byte{0xF6}, -1)
 
-func ExampleXml() {
+func ExampleSniffXmlToUtf8() {
 	rd, cs, e := langdetect.SniffXmlToUtf8(bytes.NewReader(someXmlInIso885915))
 	if e != nil {
-		fmt.Println(e)
 		return
 	}
 	var v MyStruct
 	d := xml.NewDecoder(rd)
-	d.CharsetReader = langdetect.FixXmlCharsetHandler
+	d.CharsetReader = langdetect.FixXmlCharsetReader
 	e = d.Decode(&v)
 	if e != nil {
-		fmt.Println(e)
 		return
 	}
 	lang := langdetect.DetectLanguage(v.X, cs)
 	fmt.Println("ExampleXml:", cs, lang)
 	// Output: ExampleXml: ISO885915 fi
 }
+
+func TestEmpty(*testing.T) {}

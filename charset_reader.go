@@ -47,7 +47,7 @@ func SniffXmlToUtf8(rd io.Reader) (utf8reader io.Reader, charset string, err err
 }
 
 //
-func FixXmlCharsetHandler(ignored string, rd io.Reader) (io.Reader, error) {
+func FixXmlCharsetReader(ignored string, rd io.Reader) (io.Reader, error) {
 	return rd, nil
 }
 
