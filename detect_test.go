@@ -13,7 +13,8 @@ import (
 func TestWikipedia(t *testing.T) {
 	f, e := os.Open("test_data/wikipedia")
 	if e != nil {
-		panic(e)
+		fmt.Println("NO test_data PRESENT EXITING")
+		return
 	}
 	ns, e := f.Readdirnames(-1)
 	if e != nil {
@@ -95,10 +96,11 @@ func BenchmarkDiff(b *testing.B) {
 
 func BenchmarkDetectEn(b *testing.B) {
 	bs, e := ioutil.ReadFile("test_data/wikipedia/auto_en.txt")
-	if e != nil {
-		panic(e)
-	}
 	b.ResetTimer()
+	if e != nil {
+		fmt.Println("NO test_data PRESENT EXITING")
+		return
+	}
 	for i := 0; i < b.N; i++ {
 		DetectLanguage(bs, "")
 	}
@@ -107,7 +109,8 @@ func BenchmarkDetectEn(b *testing.B) {
 func BenchmarkDetectZh(b *testing.B) {
 	bs, e := ioutil.ReadFile("test_data/wikipedia/auto_zh.txt")
 	if e != nil {
-		panic(e)
+		fmt.Println("NO test_data PRESENT EXITING")
+		return
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
