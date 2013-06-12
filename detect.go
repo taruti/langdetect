@@ -38,9 +38,11 @@ const (
 )
 */
 
-func DetectLanguage(raw []byte, originalCharset string) Language {
+// Detect language in a slice of utf8 data.
+func DetectLanguage(utf8slice []byte, originalCharset string) Language {
 	var total int
 	var sp [maxscript]uint16
+	raw := utf8slice
 	if len(raw) > 32*1024 {
 		raw = raw[:32*1024]
 	}
