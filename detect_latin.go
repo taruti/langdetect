@@ -10,7 +10,7 @@ import (
 type trigram uint32
 
 var latinTrigrams = []langTrigram{
-/*
+
 	{Cs, trigram_cs},
 	{Da, trigram_da},
 	{De, trigram_de},
@@ -30,7 +30,6 @@ var latinTrigrams = []langTrigram{
 	{Sk, trigram_sk},
 	{Sl, trigram_sl},
 	{Sv, trigram_sv},
-*/
 }
 
 type langTrigram struct {
