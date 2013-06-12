@@ -40,14 +40,19 @@ func SniffXmlToUtf8(rd io.Reader) (utf8reader io.Reader, charset string, err err
 			// This is quite invalid, treat is as utf8 however
 			return bfr, "UTF8?", nil
 		}
-		return CharsetToUtf8(string(c[0:i-1]), bfr)
+		return charsetToUtf8(string(c[0:i]), bfr)
 		// HTML THINGS FIXME
 	}
 	return bfr, "UTF8?", nil
 }
 
+//
+func FixXmlCharsetHandler(ignored string, rd io.Reader) (io.Reader, error) {
+	return rd, nil
+}
+
 // Create a reader from the specified character set to utf8.
-func CharsetToUtf8(name string, rd io.Reader) (utf8reader io.Reader, charset string, err error) {
+func charsetToUtf8(name string, rd io.Reader) (utf8reader io.Reader, charset string, err error) {
 	name = NormalizeCharsetName(name)
 	switch name {
 	case "UTF8":
@@ -69,7 +74,7 @@ func NormalizeCharsetName(csn string) string {
 		case c >= 'a' && c <= 'z':
 			c &= 223
 			fallthrough
-		case c >= 'A' && c <= 'Z':
+		case (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'):
 			res = append(res, c)
 		}
 	}
