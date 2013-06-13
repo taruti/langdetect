@@ -1,4 +1,4 @@
-/* Automatically detect text language and character set.
+/* Automatically detect text language and charset.
 
 Currently supported languages:
 Armenian(hy),
