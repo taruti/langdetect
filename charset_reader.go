@@ -40,7 +40,8 @@ func SniffXmlToUtf8(rd io.Reader) (utf8reader io.Reader, charset string, err err
 			// This is quite invalid, treat is as utf8 however
 			return bfr, "UTF8?", nil
 		}
-		return charsetToUtf8(string(c[0:i]), bfr)
+		rd, n, e := CharsetToUtf8(string(c[0:i]), bfr)
+		return rd, n, e
 		// HTML THINGS FIXME
 	}
 	return bfr, "UTF8?", nil
@@ -51,12 +52,26 @@ func FixXmlCharsetReader(ignored string, rd io.Reader) (io.Reader, error) {
 	return rd, nil
 }
 
+type ReadSetter interface {
+	io.Reader
+	// Change input stream & reset converter.
+	SetInput(io.Reader)
+}
+
+type brdwrap struct {
+	*bufio.Reader
+}
+
+func (b *brdwrap) SetInput(rd io.Reader) {
+	b.Reader = bufio.NewReader(rd)
+}
+
 // Create a reader from the specified character set to utf8.
-func charsetToUtf8(name string, rd io.Reader) (utf8reader io.Reader, charset string, err error) {
+func CharsetToUtf8(name string, rd io.Reader) (utf8reader ReadSetter, charset string, err error) {
 	name = NormalizeCharsetName(name)
 	switch name {
 	case "UTF8":
-		return rd, name, nil
+		return &brdwrap{bufio.NewReader(rd)}, name, nil
 	// Translate these all as CP1252
 	case "ISO88591", "ISO885915", "WINDOWS1252", "CP1252":
 		return &sherd{she: &cp1252, rd: bufio.NewReader(rd)}, name, nil
@@ -88,6 +103,11 @@ type sherd struct {
 	buf  [4]byte
 	she  *smallhalfencoding
 	rd   *bufio.Reader
+}
+
+func (s *sherd) SetInput(rd io.Reader) {
+	s.nbuf = 0
+	s.rd = bufio.NewReader(rd)
 }
 
 func (s *sherd) Read(bs []byte) (int, error) {

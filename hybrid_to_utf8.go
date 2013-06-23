@@ -8,24 +8,21 @@ import (
 )
 
 // Create a reader from a hybrid of the specified character set and utf8 to utf8.
-func HybridToUtf8(name string, rd io.Reader) (utf8reader io.Reader, charset string, err error) {
+func HybridToUtf8(name string, rd io.Reader) (utf8reader ReadSetter, charset string, err error) {
 	name = NormalizeCharsetName(name)
 	switch name {
 	case "UTF8":
-		return rd, name, nil
+		return &brdwrap{bufio.NewReader(rd)}, name, nil
 	// Translate these all as CP1252
 	case "ISO88591", "ISO885915", "WINDOWS1252", "CP1252":
-		return &hybrid{she: &cp1252, rd: bufio.NewReader(rd)}, name, nil
+		return &hybrid{sherd{she: &cp1252, rd: bufio.NewReader(rd)}}, name, nil
 	default:
 		return nil, name, errors.New("Unsupported character set: " + name)
 	}
 }
 
 type hybrid struct {
-	nbuf uint32
-	buf  [4]byte
-	she  *smallhalfencoding
-	rd   *bufio.Reader
+	sherd
 }
 
 func (s *hybrid) Read(bs []byte) (int, error) {
