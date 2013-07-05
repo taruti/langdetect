@@ -1,7 +1,7 @@
 package langdetect
 
 import (
-	//"fmt"
+	//	"fmt"
 	//"github.com/patrick-higgins/summstat"
 	"math"
 	"sort"
@@ -38,6 +38,8 @@ type langTrigram struct {
 }
 
 func detectLatinByteTrigram(bs []byte) Language {
+	var cs commonWordMatcherState
+	cs.processText(bs)
 	vs := trigramfreqs(calcLatinByteTrigram(bs))
 	if len(vs) > 500 {
 		vs = vs[:499]
@@ -48,6 +50,8 @@ func detectLatinByteTrigram(bs []byte) Language {
 	var bestFit = math.Inf(0)
 	for _, lt := range latinTrigrams {
 		c := trigramfreqs(vs).Diff(lt.t)
+		c += cs.score(lt.l.Number()) / 10
+		//		fmt.Printf("Language fit %v trigram=%v words=%v\n", lt.l, c, cs.score(lt.l.Number()))
 		if c < bestFit {
 			bestFit = c
 			best = lt.l

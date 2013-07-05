@@ -39,12 +39,12 @@ func TestWikipedia(t *testing.T) {
 		var alert string
 		if l != lang.String() {
 			alert = "WRONG ("
-			alert += ReadLanguageString(l).EnglishName()
+			alert += lang.EnglishName()
 			alert += ")"
 		}
 		if lang == Unknown {
 			alert = "UNKNOWN ("
-			alert += ReadLanguageString(l).EnglishName()
+			alert += lang.EnglishName()
 			alert += ")"
 		}
 		fmt.Printf("%20s => %v %s %s\n", n, lang, lang.EnglishName(), alert)
