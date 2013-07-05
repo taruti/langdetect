@@ -36,7 +36,7 @@ func main() {
 	if maxl <= 8 {
 		t = fmt.Sprintf("[%d]byte", maxl)
 	}
-	fmt.Println("module langdetect\n")
+	fmt.Println("package langdetect\n")
 	fmt.Printf("var commonWordMap = map[string]%s{\n", t)
 	for k, v := range m {
 		var iv interface{} = v
