@@ -10,6 +10,12 @@ import (
 	"testing"
 )
 
+func TestReadLanguageString(t *testing.T) {
+	if ReadLanguageString(En.String()) != En {
+		t.Fatal("ReadLanguage string failed!")
+	}
+}
+
 func TestWikipedia(t *testing.T) {
 	f, e := os.Open("test_data/wikipedia")
 	if e != nil {
@@ -33,16 +39,12 @@ func TestWikipedia(t *testing.T) {
 		var alert string
 		if l != lang.String() {
 			alert = "WRONG ("
-			if len(l) == 2 {
-				alert += Language([2]byte{l[0], l[1]}).EnglishName()
-			}
+			alert += ReadLanguageString(l).EnglishName()
 			alert += ")"
 		}
 		if lang == Unknown {
 			alert = "UNKNOWN ("
-			if len(l) == 2 {
-				alert += Language([2]byte{l[0], l[1]}).EnglishName()
-			}
+			alert += ReadLanguageString(l).EnglishName()
 			alert += ")"
 		}
 		fmt.Printf("%20s => %v %s %s\n", n, lang, lang.EnglishName(), alert)
