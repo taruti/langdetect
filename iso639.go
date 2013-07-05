@@ -32,6 +32,10 @@ func (l Language) Number() uint8 {
 	return l.transient
 }
 
+func (l Language) IsZero() bool {
+	return l.code == [2]byte{}
+}
+
 // Read a language code from a string to a Language, returns a zero Language on error.
 func ReadLanguageString(code string) Language {
 	if len(code) == 2 {
