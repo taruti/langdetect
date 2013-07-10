@@ -1,5 +1,18 @@
 package langdetect
 
+func IsCommonWord(la Language, word string) bool {
+	langs, ok := commonWordMap[word]
+	if ok {
+		lnum := la.Number()
+		for _, cand := range langs {
+			if cand == lnum {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 type commonWordMatcherState struct {
 	total        int
 	totalMatches int
