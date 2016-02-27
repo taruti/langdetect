@@ -2,7 +2,6 @@ package langdetect
 
 import (
 	"unicode/utf8"
-
 	//	"bytes"
 	//	"encoding/xml"
 	//	"io"
